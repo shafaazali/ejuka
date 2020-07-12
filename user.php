@@ -10,7 +10,7 @@ include('../connect.php');
 if(isset($_GET['id']))
 {
     $id=$_GET['id'];
-    $result = $db->prepare("DELETE FROM gallery WHERE G_ID= :memid");
+    $result = $db->prepare("DELETE FROM user WHERE Lid= :memid");
 	$result->bindParam(':memid', $id);
 	$result->execute();
 }
@@ -114,18 +114,16 @@ window.onload=startclock;
               <ul class="nav nav-list">
              <?php include "menu.php"; ?>
 			
-			
-				
 				</ul>             
           </div><!--/.well -->
         </div><!--/span-->
 	<div class="span10">
 	<div class="contentheader">
-			<i class="icon-table"></i> Gallery Videos
+			<i class="icon-table"></i> Users
 			</div>
 			<ul class="breadcrumb">
 			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Gallery Videos</li>
+			<li class="active">Users</li>
 			</ul>
 
 
@@ -133,14 +131,18 @@ window.onload=startclock;
 
 
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<a  href="addvideos.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Gallery Videos</button></a><br><br>
+<br>
 <table class="table table-bordered" id="resultTable" data-responsive="table"style="text-align: left;" border="1">
 	<thead>
 		<tr>
 			<!--<th width="12%"> Product ID </th>-->
 			<th width="12%"> Slno </th>
-			<th width="14%"> Title </th>
-			<th width="14%"> Url </th>
+			<th width="14%">  Name </th>
+			<th width="14%">  Sex </th>
+			<th width="14%">  Address </th>
+			<th width="14%">  Email </th>
+			<th width="14%">  Phone </th>
+			<th width="14%">  Level </th>				
 			<th width="8%"> Action </th>
 		</tr>
 	</thead>
@@ -148,28 +150,25 @@ window.onload=startclock;
 		
 			<?php
 			
-				include('../connect.php');
-				$result = $db->prepare("SELECT * from gallery  WHERE G_type= :G_type");
-				$id='video';
-				$result->bindParam(':G_type', $id);
+				
+				$result = $db->prepare("SELECT * FROM user");
 				$result->execute();
 				$slno=1;
 				for($i=0; $row = $result->fetch(); $i++){
 				
 				
-				echo '<tr class="record">';
-				
+			echo '<tr class="record">';			
 			?>
-		
-
 			<!--<td><?php echo $row['product_id']; ?>.</td>-->
 			<td><?php echo $slno++; ?></td>
-			<td><?php echo $row['G_title']; ?></td>
-			<td><?php echo $row['G_url']; ?></td>
-			
-			
-					<td>
-			<a href="#" id="<?php echo $row['G_ID']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
+			<td><?php echo $row['fname']." ".$row['lname']; ?></td>
+			<td><?php echo $row['sex'];?></td>
+			<td><?php echo $row['address'];?></td>
+			<td><?php echo $row['email'];?></td>
+			<td><?php echo $row['phone'];?></td>
+			<td><?php echo $row['level'];?></td>
+			<td>
+			<a href="#" id="<?php echo $row['Lid']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
 			</tr>
 			<?php
 				}
@@ -204,7 +203,7 @@ var info = 'id=' + del_id;
 
  $.ajax({
    type: "GET",
-   url: "videos.php",
+   url: "user.php",
    data: info,
    success: function(){
    

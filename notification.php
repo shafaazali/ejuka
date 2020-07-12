@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>
-Categiry
+Products
 </title>
 
 <?php 
@@ -10,7 +10,7 @@ include('../connect.php');
 if(isset($_GET['id']))
 {
     $id=$_GET['id'];
-    $result = $db->prepare("DELETE FROM gallery WHERE G_ID= :memid");
+    $result = $db->prepare("DELETE FROM notification WHERE N_id= :memid");
 	$result->bindParam(':memid', $id);
 	$result->execute();
 }
@@ -69,7 +69,38 @@ function createRandomPassword() {
 $finalcode='RS-'.createRandomPassword();
 ?>
 
-
+<script>
+function sum() {
+            var txtFirstNumberValue = document.getElementById('txt1').value;
+            var txtSecondNumberValue = document.getElementById('txt2').value;
+            var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
+            if (!isNaN(result)) {
+                document.getElementById('txt3').value = result;
+				
+            }
+			
+			 var txtFirstNumberValue = document.getElementById('txt11').value;
+            var result = parseInt(txtFirstNumberValue);
+            if (!isNaN(result)) {
+                document.getElementById('txt22').value = result;				
+            }
+			
+			 var txtFirstNumberValue = document.getElementById('txt11').value;
+            var txtSecondNumberValue = document.getElementById('txt33').value;
+            var result = parseInt(txtFirstNumberValue) + parseInt(txtSecondNumberValue);
+            if (!isNaN(result)) {
+                document.getElementById('txt55').value = result;
+				
+            }
+			
+			 var txtFirstNumberValue = document.getElementById('txt4').value;
+			 var result = parseInt(txtFirstNumberValue);
+            if (!isNaN(result)) {
+                document.getElementById('txt5').value = result;
+				}
+			
+        }
+</script>
 
 
  <script language="javascript" type="text/javascript">
@@ -113,7 +144,7 @@ window.onload=startclock;
           <div class="well sidebar-nav">
               <ul class="nav nav-list">
              <?php include "menu.php"; ?>
-			
+			<		
 			
 				
 				</ul>             
@@ -121,11 +152,11 @@ window.onload=startclock;
         </div><!--/span-->
 	<div class="span10">
 	<div class="contentheader">
-			<i class="icon-table"></i> Gallery Videos
+			<i class="icon-table"></i> Notificaton
 			</div>
 			<ul class="breadcrumb">
 			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Gallery Videos</li>
+			<li class="active">Notificaton</li>
 			</ul>
 
 
@@ -133,14 +164,17 @@ window.onload=startclock;
 
 
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<a  href="addvideos.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Gallery Videos</button></a><br><br>
-<table class="table table-bordered" id="resultTable" data-responsive="table"style="text-align: left;" border="1">
+<a  href="addnotification.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Notification</button></a><br><br>
+<table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;" border="1">
 	<thead>
 		<tr>
 			<!--<th width="12%"> Product ID </th>-->
 			<th width="12%"> Slno </th>
 			<th width="14%"> Title </th>
-			<th width="14%"> Url </th>
+			<th width="13%"> Description </th>
+			<th width="7%"> Date </th>
+			<th width="9%"> Time </th>
+			
 			<th width="8%"> Action </th>
 		</tr>
 	</thead>
@@ -149,9 +183,7 @@ window.onload=startclock;
 			<?php
 			
 				include('../connect.php');
-				$result = $db->prepare("SELECT * from gallery  WHERE G_type= :G_type");
-				$id='video';
-				$result->bindParam(':G_type', $id);
+				$result = $db->prepare("SELECT * FROM notification ORDER BY  N_id DESC");
 				$result->execute();
 				$slno=1;
 				for($i=0; $row = $result->fetch(); $i++){
@@ -164,12 +196,13 @@ window.onload=startclock;
 
 			<!--<td><?php echo $row['product_id']; ?>.</td>-->
 			<td><?php echo $slno++; ?></td>
-			<td><?php echo $row['G_title']; ?></td>
-			<td><?php echo $row['G_url']; ?></td>
+			<td><?php echo $row['Title']; ?></td>
+			<td><?php echo $row['Description']; ?></td>
+			<td><?php echo $row['N_date']; ?></td>
+			<td><?php echo $row['Time']; ?></td>
 			
-			
-					<td>
-			<a href="#" id="<?php echo $row['G_ID']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
+					<td><a title="Click to edit the product" href="editproduct.php?id=<?php echo $row['N_id']; ?>"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>
+			<a href="#" id="<?php echo $row['N_id']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
 			</tr>
 			<?php
 				}
@@ -204,7 +237,7 @@ var info = 'id=' + del_id;
 
  $.ajax({
    type: "GET",
-   url: "videos.php",
+   url: "notification.php",
    data: info,
    success: function(){
    

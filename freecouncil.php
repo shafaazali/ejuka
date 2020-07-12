@@ -7,13 +7,6 @@ Categiry
 <?php 
 require_once('auth.php');
 include('../connect.php');
-if(isset($_GET['id']))
-{
-    $id=$_GET['id'];
-    $result = $db->prepare("DELETE FROM gallery WHERE G_ID= :memid");
-	$result->bindParam(':memid', $id);
-	$result->execute();
-}
 ?>
  <link href="css/bootstrap.css" rel="stylesheet">
 
@@ -113,7 +106,7 @@ window.onload=startclock;
           <div class="well sidebar-nav">
               <ul class="nav nav-list">
              <?php include "menu.php"; ?>
-			
+			<br><br><br><br><br><br>		
 			
 				
 				</ul>             
@@ -121,11 +114,11 @@ window.onload=startclock;
         </div><!--/span-->
 	<div class="span10">
 	<div class="contentheader">
-			<i class="icon-table"></i> Gallery Videos
+			<i class="icon-table"></i> Free Council Request
 			</div>
 			<ul class="breadcrumb">
 			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Gallery Videos</li>
+			<li class="active">Free Council Request</li>
 			</ul>
 
 
@@ -133,15 +126,18 @@ window.onload=startclock;
 
 
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<a  href="addvideos.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Gallery Videos</button></a><br><br>
+<br><br>
 <table class="table table-bordered" id="resultTable" data-responsive="table"style="text-align: left;" border="1">
 	<thead>
 		<tr>
 			<!--<th width="12%"> Product ID </th>-->
 			<th width="12%"> Slno </th>
-			<th width="14%"> Title </th>
-			<th width="14%"> Url </th>
-			<th width="8%"> Action </th>
+			<th width="14%"> Name </th>
+			<th width="14%"> Phone </th>
+			<th width="14%"> Email id </th>
+			<th width="14%"> Description </th>
+			<th width="14%"> Date </th>
+			
 		</tr>
 	</thead>
 	<tbody>
@@ -149,9 +145,8 @@ window.onload=startclock;
 			<?php
 			
 				include('../connect.php');
-				$result = $db->prepare("SELECT * from gallery  WHERE G_type= :G_type");
-				$id='video';
-				$result->bindParam(':G_type', $id);
+				$result = $db->prepare("SELECT free_council.* FROM free_council order by R_date DESC");
+								
 				$result->execute();
 				$slno=1;
 				for($i=0; $row = $result->fetch(); $i++){
@@ -162,15 +157,16 @@ window.onload=startclock;
 			?>
 		
 
-			<!--<td><?php echo $row['product_id']; ?>.</td>-->
+			
 			<td><?php echo $slno++; ?></td>
-			<td><?php echo $row['G_title']; ?></td>
-			<td><?php echo $row['G_url']; ?></td>
+			<td><?php echo $row['name'] ;?></td>
+			<td><?php echo $row['phone']; ?></td>
+			<td><?php echo $row['email']; ?></td>
+			<td><?php echo $row['description']; ?></td>
+			<td><?php echo $row['R_date']; ?></td>
 			
-			
-					<td>
-			<a href="#" id="<?php echo $row['G_ID']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
 			</tr>
+
 			<?php
 				}
 			?>
@@ -204,7 +200,7 @@ var info = 'id=' + del_id;
 
  $.ajax({
    type: "GET",
-   url: "videos.php",
+   url: "deletenotification.php",
    data: info,
    success: function(){
    

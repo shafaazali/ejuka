@@ -6,14 +6,6 @@ Categiry
 
 <?php 
 require_once('auth.php');
-include('../connect.php');
-if(isset($_GET['id']))
-{
-    $id=$_GET['id'];
-    $result = $db->prepare("DELETE FROM gallery WHERE G_ID= :memid");
-	$result->bindParam(':memid', $id);
-	$result->execute();
-}
 ?>
  <link href="css/bootstrap.css" rel="stylesheet">
 
@@ -114,18 +106,16 @@ window.onload=startclock;
               <ul class="nav nav-list">
              <?php include "menu.php"; ?>
 			
-			
-				
 				</ul>             
           </div><!--/.well -->
         </div><!--/span-->
 	<div class="span10">
 	<div class="contentheader">
-			<i class="icon-table"></i> Gallery Videos
+			<i class="icon-table"></i> Gallery
 			</div>
 			<ul class="breadcrumb">
 			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Gallery Videos</li>
+			<li class="active">Gallery</li>
 			</ul>
 
 
@@ -133,14 +123,14 @@ window.onload=startclock;
 
 
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<a  href="addvideos.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Gallery Videos</button></a><br><br>
+<a  href="addgallery.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Gallery</button></a><br><br>
 <table class="table table-bordered" id="resultTable" data-responsive="table"style="text-align: left;" border="1">
 	<thead>
 		<tr>
 			<!--<th width="12%"> Product ID </th>-->
 			<th width="12%"> Slno </th>
 			<th width="14%"> Title </th>
-			<th width="14%"> Url </th>
+			<th width="14%"> Images </th>
 			<th width="8%"> Action </th>
 		</tr>
 	</thead>
@@ -150,7 +140,7 @@ window.onload=startclock;
 			
 				include('../connect.php');
 				$result = $db->prepare("SELECT * from gallery  WHERE G_type= :G_type");
-				$id='video';
+				$id='image';
 				$result->bindParam(':G_type', $id);
 				$result->execute();
 				$slno=1;
@@ -165,7 +155,7 @@ window.onload=startclock;
 			<!--<td><?php echo $row['product_id']; ?>.</td>-->
 			<td><?php echo $slno++; ?></td>
 			<td><?php echo $row['G_title']; ?></td>
-			<td><?php echo $row['G_url']; ?></td>
+			<td><img src="gallery/<?php echo $row['G_url']; ?>" hight="100" width="100"></td>
 			
 			
 					<td>
@@ -204,7 +194,7 @@ var info = 'id=' + del_id;
 
  $.ajax({
    type: "GET",
-   url: "videos.php",
+   url: "deletenotification.php",
    data: info,
    success: function(){
    

@@ -1,223 +1,226 @@
-<?php
+<html>
+<head>
+<title>
+Categiry
+</title>
 
-session_start();
-//Connect to mysql server
-	$link = mysqli_connect("localhost","root","","ejuka");
-	//$link = mysqli_connect('localhost','root',"");
-	if(!$link) {
-		die('Failed to connect to server: ' . mysqli_connect_error());
+<?php 
+require_once('auth.php');
+?>
+ <link href="css/bootstrap.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">
+  
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+<link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
+<!--sa poip up-->
+<script src="jeffartagame.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/application.js" type="text/javascript" charset="utf-8"></script>
+<link href="src/facebox.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="lib/jquery.js" type="text/javascript"></script>
+<script src="src/facebox.js" type="text/javascript"></script>
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+    $('a[rel*=facebox]').facebox({
+      loadingImage : 'src/loading.gif',
+      closeImage   : 'src/closelabel.png'
+    })
+  })
+</script>
+</head>
+<?php
+function createRandomPassword() {
+	$chars = "003232303232023232023456789";
+	srand((double)microtime()*1000000);
+	$i = 0;
+	$pass = '' ;
+	while ($i <= 7) {
+
+		$num = rand() % 33;
+
+		$tmp = substr($chars, $num, 1);
+
+		$pass = $pass . $tmp;
+
+		$i++;
+
 	}
-?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>EJUKA</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700, 900|Playfair+Display:400,900" rel="stylesheet">
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-
-    <link rel="stylesheet" href="css/jquery.fancybox.min.css">
-
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-
-    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
-
-    <link rel="stylesheet" href="css/aos.css">
-
-    <link rel="stylesheet" href="css/style.css">
-    
-  </head>
-  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300" id="home-section">
-  
-
-  <div id="overlayer"></div>
-  <div class="loader">
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </div>
-
-
-  <div class="site-wrap">
-
-    <div class="site-mobile-menu site-navbar-target">
-      <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close mt-3">
-          <span class="icon-close2 js-menu-toggle"></span>
-        </div>
-      </div>
-      <div class="site-mobile-menu-body"></div>
-    </div>
-   
-    
-    <header class="site-navbar js-sticky-header site-navbar-target" role="banner" >
-
-      <div class="container">
-        <div class="row align-items-center">
-          
-          <div class="col-6 col-xl-2">
-            <h1 class="mb-0 site-logo"><a href="index.html" class="h2 mb-0">EJUKA<span class="text-primary">.</span> </a></h1>
-          </div>
-
-          <div class="col-12 col-md-10 d-none d-xl-block">
-            <nav class="site-navigation position-relative text-right" role="navigation">
-
-              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li><a href="index.php" class="nav-link">Home</a></li>                
-                <li><a href="notifications.php" class="nav-link">Notification</a></li>
-                <li><a href="events.php" class="nav-link">Events</a></li>
-                <li class="has-children">
-               <a href="#services-section" class="nav-link">Gallary</a>
-                <ul class="dropdown">
-                    <li><a href="gallary.php" class="nav-link">Images</a></li>
-                    <li><a href="videos.php" class="nav-link">Videos</a></li>
-                </ul>
-                </li>
-                <li class="has-children">
-                  <a href="#about-section" class="nav-link">Services</a>
-                  <ul class="dropdown">
- <?php
-       
-          $qry_n="SELECT * FROM services "; 
-          
-             $result_not1=mysqli_query($link,$qry_n);
-          if(mysqli_num_rows($result_not1) > 0) 
-            {
-                while($not1 = mysqli_fetch_assoc($result_not1))
-                {
-            ?>
-                    <li><a href="services.php?id=<?php echo $not1['S_id']; ?>" class="nav-link"><?php echo $not1['Sevices']; ?></a></li>
-                    
-                 <?php
-                 }
-                 }?>  
-                   
-                  </ul>
-                                              
-                
-                
-                
-<?php if(isset($_SESSION['SESS_MEMBER_ID']))
-{
-?>
-<li><a href="ask.php" class="nav-link">Ask a Doubt</a></li>
-<li><a href="feedback.php" class="nav-link">Feedback</a></li>
-<li><a href="request.php" class="nav-link">Request for council</a></li> 
-<li><a href="exam.php" class="nav-link">Start Exam</a></li>
-<li><a href="logout.php" class="nav-link">Logout</a></li>
-<?php
-}else{
-  ?>
-  <li><a href="adminindex.php" class="nav-link">login</a></li>
-  <?php
+	return $pass;
 }
-    ?>          </ul>
-            </nav>
-          </div>
+$finalcode='RS-'.createRandomPassword();
+?>
 
 
-          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
 
-        </div>
-      </div>
-      
-    </header>
-   <section class="site-section" id="gallery-section">
-      <div class="container-fluid">
-        <div class="row mb-5 justify-content-center">
-          <div class="col-md-7 text-center">
-            <h2 class="text-black">Our Events</h2>
-            
-          </div>
-        </div>
-<div class="row">
-        
-         <?php
-          $qry_envts="SELECT * FROM events order by E_ID";  
-      $result_envts=mysqli_query($link,$qry_envts);
-      if(mysqli_num_rows($result_envts) > 0) 
-      {
-        while($not_envts = mysqli_fetch_assoc($result_envts))
-        {
-          $e=$not_envts['E_ID'];
-          $img_not="SELECT * from event_images where E_ID_FK=$e limit 1";               
-              $result_img=mysqli_query($link,$img_not);
-              $img="";
-          if(mysqli_num_rows($result_img) > 0) 
-          {
-            $img1=mysqli_fetch_assoc($result_img);
-            $img=$img1['Image'];
-          }
-            ?>
-            <a href="events_details.php?id=<?php echo $not_envts['E_ID'];?>">  
-               <div class="service">
-              <figure class="mb-4"><img src="main/events/<?php echo $img;?>" height="100" width="150" alt="Free website template by Free-Template.co" class="img-fluid"></figure>
-              <h3 class="text-black mb-3"><?php echo $not_envts['E_Name'];?></h3>
-              <p><?php echo $not_envts['E_Description'];?></p>
-             </div>
-              </a>
-             <?php
-            }
-          }
-             ?>
-    </div>
-      </div>
-    </section>
 
-    
+ <script language="javascript" type="text/javascript">
+/* Visit http://www.yaldex.com/ for full source code
+and get more free JavaScript, CSS and DHTML scripts! */
+<!-- Begin
+var timerID = null;
+var timerRunning = false;
+function stopclock (){
+if(timerRunning)
+clearTimeout(timerID);
+timerRunning = false;
+}
+function showtime () {
+var now = new Date();
+var hours = now.getHours();
+var minutes = now.getMinutes();
+var seconds = now.getSeconds()
+var timeValue = "" + ((hours >12) ? hours -12 :hours)
+if (timeValue == "0") timeValue = 12;
+timeValue += ((minutes < 10) ? ":0" : ":") + minutes
+timeValue += ((seconds < 10) ? ":0" : ":") + seconds
+timeValue += (hours >= 12) ? " P.M." : " A.M."
+document.clock.face.value = timeValue;
+timerID = setTimeout("showtime()",1000);
+timerRunning = true;
+}
+function startclock() {
+stopclock();
+showtime();
+}
+window.onload=startclock;
+// End -->
+</SCRIPT>	
 
-        <div class="row pt-5 mt-5 text-left">
-          <div class="col-md-12">
-            <div class="border-top pt-5">
-              <p class="copyright"><small>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></small></p>
-        
-            </div>
-          </div>
-          
-        </div>
+<body>
+<?php include('navfixed.php');?>
+<div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span2">
+          <div class="well sidebar-nav">
+              <ul class="nav nav-list">
+             <?php include "menu.php"; ?>
+			
+				
+				</ul>             
+          </div><!--/.well -->
+        </div><!--/span-->
+	<div class="span10">
+	<div class="contentheader">
+			<i class="icon-table"></i> Gallery
+			</div>
+			<ul class="breadcrumb">
+			<li><a href="index.php">Dashboard</a></li> /
+			<li class="active">Gallery</li>
+			</ul>
 
-      </div>
-    </footer>
 
-  </div> <!-- .site-wrap -->
 
-  <script src="js/jquery-3.3.1.min.js"></script>
-  <script src="js/jquery-ui.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/jquery.countdown.min.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/aos.js"></script>
-  <script src="js/jquery.fancybox.min.js"></script>
-  <script src="js/jquery.sticky.js"></script>
-  <script src="js/isotope.pkgd.min.js"></script>
-  
-  <script src="js/typed.js"></script>
-            <script>
-            var typed = new Typed('.typed-words', {
-            strings: ["Motivational Speakers","Professional Speakers","Business Speakers", "Professional Life Coach"],
-            typeSpeed: 80,
-            backSpeed: 80,
-            backDelay: 4000,
-            startDelay: 1000,
-            loop: true,
-            showCursor: true
-            });
-            </script>
-  
-  <script src="js/main.js"></script>
 
-  </body>
+
+<input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
+<a  href="addevents.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Events</button></a><br><br>
+<table class="table table-bordered" id="resultTable" data-responsive="table"style="text-align: left;" border="1">
+	<thead>
+		<tr>
+			<!--<th width="12%"> Product ID </th>-->
+			<th width="12%"> Slno </th>
+			<th width="14%"> Event Name </th>
+			<th width="14%">Description </th>
+			<th width="14%"> Images </th>
+			<th width="8%"> Action </th>
+		</tr>
+	</thead>
+	<tbody>
+		
+			<?php
+			
+				include('../connect.php');
+				$result = $db->prepare("SELECT * from events  order by E_ID");				
+				$result->execute();
+				$slno=1;
+				for($i=0; $row = $result->fetch(); $i++){
+				
+				
+				echo '<tr class="record">';
+				
+			?>
+		
+
+			<!--<td><?php echo $row['product_id']; ?>.</td>-->
+			<td><?php echo $slno++; ?></td>
+			<td><?php echo $row['E_Name']; ?></td>
+			<td><?php echo $row['E_Description']; ?></td>
+			<td> <?php 
+			 $result2 = $db->prepare("SELECT * from event_images where E_ID_FK=:id");	
+			 $id=$row['E_ID'];
+			 $result2->bindParam(':id',$id );
+			 $result2->execute();
+				
+				for($j=0; $row1 = $result2->fetch(); $j++)
+					{ ?>
+					<img src="events/<?php echo $row1['Image']; ?>" hight="30" width="30">
+			   <?php } ?>
+			</td>
+			<td>
+			<a href="#" id="<?php echo $row['E_ID']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
+			</tr>
+			<?php
+				}
+			?>
+		
+		
+		
+	</tbody>
+</table>
+<div class="clearfix"></div>
+</div>
+</div>
+</div>
+
+<script src="js/jquery.js"></script>
+  <script type="text/javascript">
+$(function() {
+
+
+$(".delbutton").click(function(){
+
+//Save the link in a variable called element
+var element = $(this);
+
+//Find the id of the link that was clicked
+var del_id = element.attr("id");
+
+//Built a url to send
+var info = 'id=' + del_id;
+ if(confirm("Sure you want to delete this Product? There is NO undo!"))
+		  {
+
+ $.ajax({
+   type: "GET",
+   url: "deletenotification.php",
+   data: info,
+   success: function(){
+   
+   }
+ });
+         $(this).parents(".record").animate({ backgroundColor: "#fbc7c7" }, "fast")
+		.animate({ opacity: "hide" }, "slow");
+
+ }
+
+return false;
+
+});
+
+});
+</script>
+</body>
+<?php include('footer.php');?>
+
 </html>

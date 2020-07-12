@@ -7,12 +7,14 @@ Categiry
 <?php 
 require_once('auth.php');
 include('../connect.php');
-if(isset($_GET['id']))
+if(isset($_POST['sub']))
 {
-    $id=$_GET['id'];
-    $result = $db->prepare("DELETE FROM gallery WHERE G_ID= :memid");
-	$result->bindParam(':memid', $id);
-	$result->execute();
+	$id=$_POST['qid'];
+	$ans=$_POST['ans'];
+	$sql = "UPDATE ask_question set answer=? where A_id=?";
+    $q = $db->prepare($sql);
+    $q->execute(array($ans,$id));
+    header('Location:askdoubtview.php');
 }
 ?>
  <link href="css/bootstrap.css" rel="stylesheet">
@@ -113,7 +115,8 @@ window.onload=startclock;
           <div class="well sidebar-nav">
               <ul class="nav nav-list">
              <?php include "menu.php"; ?>
-			
+			<br><br><br><br><br><br>		
+					
 			
 				
 				</ul>             
@@ -121,11 +124,11 @@ window.onload=startclock;
         </div><!--/span-->
 	<div class="span10">
 	<div class="contentheader">
-			<i class="icon-table"></i> Gallery Videos
+			<i class="icon-table"></i> Ask Doubt
 			</div>
 			<ul class="breadcrumb">
 			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Gallery Videos</li>
+			<li class="active">Ask Doubt</li>
 			</ul>
 
 
@@ -133,14 +136,14 @@ window.onload=startclock;
 
 
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<a  href="addvideos.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Gallery Videos</button></a><br><br>
+<br><br>
 <table class="table table-bordered" id="resultTable" data-responsive="table"style="text-align: left;" border="1">
 	<thead>
 		<tr>
 			<!--<th width="12%"> Product ID </th>-->
 			<th width="12%"> Slno </th>
-			<th width="14%"> Title </th>
-			<th width="14%"> Url </th>
+			<th width="14%"> User </th>
+			<th width="14%"> Question </th>
 			<th width="8%"> Action </th>
 		</tr>
 	</thead>
@@ -149,9 +152,9 @@ window.onload=startclock;
 			<?php
 			
 				include('../connect.php');
-				$result = $db->prepare("SELECT * from gallery  WHERE G_type= :G_type");
-				$id='video';
-				$result->bindParam(':G_type', $id);
+				$result = $db->prepare("SELECT ask_question.*,user.* FROM ask_question,user where ask_question.User_id =user.Lid and answer= :G_type");
+				$id='';
+				$result->bindParam(':G_type', $id);				
 				$result->execute();
 				$slno=1;
 				for($i=0; $row = $result->fetch(); $i++){
@@ -162,15 +165,13 @@ window.onload=startclock;
 			?>
 		
 
-			<!--<td><?php echo $row['product_id']; ?>.</td>-->
+			
 			<td><?php echo $slno++; ?></td>
-			<td><?php echo $row['G_title']; ?></td>
-			<td><?php echo $row['G_url']; ?></td>
-			
-			
-					<td>
-			<a href="#" id="<?php echo $row['G_ID']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
+			<td><?php echo $row['fname'].' '.$row['lname']; ?></td>
+			<td><?php echo $row['question']; ?></td>
+			<td><form method="post"><textarea name="ans" required="required"></textarea><input type="hidden" name="qid" value="<?php echo $row['A_id'];?>"> <input type="submit" name="sub" value="Answer"></input></form></td>
 			</tr>
+
 			<?php
 				}
 			?>
@@ -204,7 +205,7 @@ var info = 'id=' + del_id;
 
  $.ajax({
    type: "GET",
-   url: "videos.php",
+   url: "deletenotification.php",
    data: info,
    success: function(){
    

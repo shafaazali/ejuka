@@ -1,18 +1,29 @@
 <html>
 <head>
 <title>
-Categiry
+Products
 </title>
 
 <?php 
 require_once('auth.php');
-include('../connect.php');
-if(isset($_GET['id']))
+if(isset($_POST['submit']))
 {
-    $id=$_GET['id'];
-    $result = $db->prepare("DELETE FROM gallery WHERE G_ID= :memid");
-	$result->bindParam(':memid', $id);
-	$result->execute();
+	include('../connect.php');
+	// upload tracking file //
+	$a = $_POST['title'];
+	$b = $_POST['url'];
+
+
+  			
+		$c='video';
+		// query
+		$sql = "INSERT INTO gallery (G_type,G_url,G_title) VALUES (:a,:b,:c)";
+		$q = $db->prepare($sql);
+		$q->execute(array(':a'=>$c,':b'=>$b,':c'=>$a))or die("hello");
+		
+	
+
+header("location: videos.php");
 }
 ?>
  <link href="css/bootstrap.css" rel="stylesheet">
@@ -112,115 +123,46 @@ window.onload=startclock;
 	<div class="span2">
           <div class="well sidebar-nav">
               <ul class="nav nav-list">
-             <?php include "menu.php"; ?>
-			
-			
-				
+              <?php include "menu.php";?>
 				</ul>             
           </div><!--/.well -->
         </div><!--/span-->
 	<div class="span10">
 	<div class="contentheader">
-			<i class="icon-table"></i> Gallery Videos
+			<i class="icon-table"></i> Add Videos
 			</div>
 			<ul class="breadcrumb">
 			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Gallery Videos</li>
+			<li><a href="videos.php"> Videos</a></li> /
+			<li class="active">Add Videos </li>
 			</ul>
 
+<form method="post" enctype="multipart/form-data">
+<table class="table table-bordered" id="resultTable" data-responsive="table">
+<tr>
+    <td>Title</td>
+    <td><input type="text" name="title" required="required" ></input></td>
+</tr>
 
-
-
-
-<input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<a  href="addvideos.php"><Button type="button" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Gallery Videos</button></a><br><br>
-<table class="table table-bordered" id="resultTable" data-responsive="table"style="text-align: left;" border="1">
-	<thead>
-		<tr>
-			<!--<th width="12%"> Product ID </th>-->
-			<th width="12%"> Slno </th>
-			<th width="14%"> Title </th>
-			<th width="14%"> Url </th>
-			<th width="8%"> Action </th>
-		</tr>
-	</thead>
-	<tbody>
-		
-			<?php
-			
-				include('../connect.php');
-				$result = $db->prepare("SELECT * from gallery  WHERE G_type= :G_type");
-				$id='video';
-				$result->bindParam(':G_type', $id);
-				$result->execute();
-				$slno=1;
-				for($i=0; $row = $result->fetch(); $i++){
-				
-				
-				echo '<tr class="record">';
-				
-			?>
-		
-
-			<!--<td><?php echo $row['product_id']; ?>.</td>-->
-			<td><?php echo $slno++; ?></td>
-			<td><?php echo $row['G_title']; ?></td>
-			<td><?php echo $row['G_url']; ?></td>
-			
-			
-					<td>
-			<a href="#" id="<?php echo $row['G_ID']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
-			</tr>
-			<?php
-				}
-			?>
-		
-		
-		
-	</tbody>
+<tr>
+    <td>Image</td><td><input type="url" name="url" required="required" ></input></td>
+</tr>
+    
+<tr><td colspan="2" align="center"><input type="submit" name="submit" value="Submit"></input></td> </tr>
 </table>
+</form>
+
 <div class="clearfix"></div>
 </div>
 </div>
 </div>
 
 <script src="js/jquery.js"></script>
-  <script type="text/javascript">
-$(function() {
+ 
 
 
-$(".delbutton").click(function(){
 
-//Save the link in a variable called element
-var element = $(this);
 
-//Find the id of the link that was clicked
-var del_id = element.attr("id");
-
-//Built a url to send
-var info = 'id=' + del_id;
- if(confirm("Sure you want to delete this Product? There is NO undo!"))
-		  {
-
- $.ajax({
-   type: "GET",
-   url: "videos.php",
-   data: info,
-   success: function(){
-   
-   }
- });
-         $(this).parents(".record").animate({ backgroundColor: "#fbc7c7" }, "fast")
-		.animate({ opacity: "hide" }, "slow");
-
- }
-
-return false;
-
-});
-
-});
-</script>
 </body>
 <?php include('footer.php');?>
 
